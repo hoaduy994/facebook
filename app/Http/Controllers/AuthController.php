@@ -12,9 +12,6 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct() {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
-    }
     /**
      * Get a JWT via given credentials.
      *
@@ -89,7 +86,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function refresh() {
-        return $this->createNewToken(auth()->refresh());
+        // return $this->createNewToken(auth()->refresh());
     }
     /**
      * Get the authenticated User.

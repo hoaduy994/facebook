@@ -6,31 +6,30 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    //
-    $users = User:: where ;
+    // //
+    // $users = User:: where ;
 
-    $posts = collect([]);
+    // $posts = collect([]);
 
-    foreach ($users as $user) {
-        $posts->push($user->posts);
-    }
+    // foreach ($users as $user) {
+    //     $posts->push($user->posts);
+    // }
 
-    $posts->orderByDesc('created_at');
-    getCountLikeAtributes() {
-        $this->dsadasdahdk
-        return 5;
-   
-    }
-    Post {
-        id : $this->id
-        user_created : post->user,
-        avartar: $this->avatar
-        like_count: $this->count_like,
-        count_comment: $this->count_ment
-    }
+    // $posts->orderByDesc('created_at');
+    // getCountLikeAtributes() {
+    //     $this->dsadasdahdk
+    //     return 5;
+    // }
+    // Post {
+    //     id : $this->id
+    //     user_created : post->user,
+    //     avartar: $this->avatar
+    //     like_count: $this->count_like,
+    //     count_comment: $this->count_ment
+    // }
 
-    detail <post> {
+    // detail <post> {
         
-    }
-    list_comment: new CommentCollection($this->comments);
+    // }
+    // list_comment: new CommentCollection($this->comments);
 }

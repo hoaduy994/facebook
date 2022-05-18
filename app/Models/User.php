@@ -19,7 +19,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array<int, string>
      */
     protected $guarded = [];
-
+    protected $table = 'users';
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -45,4 +45,8 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims() {
         return [];
     } 
+
+    public function postsCreated() {
+        return $this->hasMany(Post::class, 'user_id', 'id');
+    }
 }
