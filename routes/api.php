@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\StoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,3 +42,4 @@ Route::group([
     Route::get('/user-profile', [AuthController::class, 'userProfile']);    
 
 });
+Route::post('/story', [StoryController::class, 'createStory']);
