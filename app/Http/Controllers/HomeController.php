@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+<<<<<<< HEAD
 use App\Models\Stories;
 use App\Models\Storiesimg;
+=======
+use App\Models\PostDetail;
+>>>>>>> fdfd20c57abebeb9d2649198baee34df16ef0fa6
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -41,18 +46,40 @@ class HomeController extends Controller
         $data = [
             'content' => $request->content,
             'access_modifier' => $request->access_modifier,
+<<<<<<< HEAD
             'image' => $this->saveImagePost($request->image),
+=======
+>>>>>>> fdfd20c57abebeb9d2649198baee34df16ef0fa6
         ];
         // if ($request->access_modified){
         //     $data['access_modified'] = $request->access_modified;
         // }
-
         $user = auth()->user();
         $post = $user->postsCreated()->create($data);
-
+        
+        $post_id = $post->id;
+        $data1= [
+            'post_id' => $post_id,
+            'is_like' => '0',
+            'is_love' => '0',
+            'is_haha' => '0',
+            'is_angry' => '0',
+            'is_sad' => '0',
+            'is_wow' => '0',
+            'total' => '0',
+        ];
+        $post_detail = $post->createPostdetail()->create($data1);
+        dd($post_detail);
         return response()->json([
+<<<<<<< HEAD
             'message' => 'Bạn đã tạo bài viết thành công.',
             'post' => $post
+=======
+            'message' => 'Created posts successfully',
+            'post' => $post,
+            'id' => $post_detail
+
+>>>>>>> fdfd20c57abebeb9d2649198baee34df16ef0fa6
         ]);
         // $post = Post::create
     }
@@ -63,11 +90,7 @@ class HomeController extends Controller
             'access_modifier' => 'in:1,2,3',
             'image' => 'required|image',
         ]);
-        // $data = [
-        //     'content' => $request->content,
-        //     'access_modifier' => $request->access_modifier
-        // ];
-        
+
 
         $post = Post::find($id);
         if (!$post) {
@@ -82,8 +105,7 @@ class HomeController extends Controller
                 'message' => 'Not permission to update post',
             ], 403);
         }
-
-     
+    
         DB::beginTransaction();
         try {
             $post->content =  $request->content;
@@ -240,4 +262,5 @@ class HomeController extends Controller
             throw new \Exception($e->getMessage());
         }
     }
+
 }
