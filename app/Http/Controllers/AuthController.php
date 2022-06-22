@@ -70,6 +70,12 @@ class AuthController extends Controller
             'token' => $this->createNewToken($token)->original
         ], 201);
     }
+    public function me()
+    {
+        $user = Auth::user();
+
+        return $this->responseHelper->successResponse(true, 'User', $user);
+    }
 
     /**
      * Log the user out (Invalidate the token).
