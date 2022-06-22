@@ -49,7 +49,7 @@ class User extends Authenticatable implements JWTSubject
     public function postsCreated() {
         return $this->hasMany(Post::class, 'user_id', 'id');
     }
-<<<<<<< HEAD
+
 
     
     public function storiesCreated() {
@@ -86,7 +86,6 @@ class User extends Authenticatable implements JWTSubject
     public function memberRequests (){
         return $this->hasMany(GroupUser::class, 'user_id')->where('stt', GroupUser::REQUEST_MEMBER);
     }
-=======
     public function commentsCreated() {
         return $this->hasMany(Comment::class, 'user_id', 'id');
     }
@@ -96,5 +95,5 @@ class User extends Authenticatable implements JWTSubject
      
     }
     
->>>>>>> fdfd20c57abebeb9d2649198baee34df16ef0fa6
+
 }

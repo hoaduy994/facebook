@@ -3,10 +3,10 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\HomeController;
-<<<<<<< HEAD
+
 use App\Http\Controllers\GroupControllers;
-use App\Http\Controllers\ResetPasswordController;
-=======
+
+
 use App\Http\Controllers\StoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResetPasswordController;
@@ -14,7 +14,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\PostDetailController;
 use app\Models\User;
->>>>>>> fdfd20c57abebeb9d2649198baee34df16ef0fa6
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

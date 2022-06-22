@@ -11,7 +11,6 @@ class Post extends Model
     protected $guarded = [];
 
     protected $table = 'posts';
-<<<<<<< HEAD
     
     public function postsCreated() {
         return $this->hasMany(Post::class, 'user_id', 'id');
@@ -19,7 +18,7 @@ class Post extends Model
 
     public function group(){
         return $this->belongsTo(Groups::class);
-=======
+    }
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -40,6 +39,5 @@ class Post extends Model
 
     public function createPostdetail (){
         return $this->hasMany(PostDetail::class,'id');
->>>>>>> fdfd20c57abebeb9d2649198baee34df16ef0fa6
     }
 }

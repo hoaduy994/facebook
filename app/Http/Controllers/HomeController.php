@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-<<<<<<< HEAD
 use App\Models\Stories;
 use App\Models\Storiesimg;
-=======
+
 use App\Models\PostDetail;
->>>>>>> fdfd20c57abebeb9d2649198baee34df16ef0fa6
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
@@ -46,10 +45,8 @@ class HomeController extends Controller
         $data = [
             'content' => $request->content,
             'access_modifier' => $request->access_modifier,
-<<<<<<< HEAD
             'image' => $this->saveImagePost($request->image),
-=======
->>>>>>> fdfd20c57abebeb9d2649198baee34df16ef0fa6
+
         ];
         // if ($request->access_modified){
         //     $data['access_modified'] = $request->access_modified;
@@ -69,17 +66,15 @@ class HomeController extends Controller
             'total' => '0',
         ];
         $post_detail = $post->createPostdetail()->create($data1);
-        dd($post_detail);
+        
         return response()->json([
-<<<<<<< HEAD
+
             'message' => 'Bạn đã tạo bài viết thành công.',
-            'post' => $post
-=======
+            'post' => $post,
+
             'message' => 'Created posts successfully',
             'post' => $post,
             'id' => $post_detail
-
->>>>>>> fdfd20c57abebeb9d2649198baee34df16ef0fa6
         ]);
         // $post = Post::create
     }
