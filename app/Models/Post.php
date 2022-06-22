@@ -11,5 +11,12 @@ class Post extends Model
     protected $guarded = [];
 
     protected $table = 'posts';
+    
+    public function postsCreated() {
+        return $this->hasMany(Post::class, 'user_id', 'id');
+    }
 
+    public function group(){
+        return $this->belongsTo(Groups::class);
+    }
 }

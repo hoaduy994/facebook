@@ -49,4 +49,40 @@ class User extends Authenticatable implements JWTSubject
     public function postsCreated() {
         return $this->hasMany(Post::class, 'user_id', 'id');
     }
+
+    
+    public function storiesCreated() {
+        return $this->hasMany(Stories::class, 'user_id', 'id');
+    }
+    
+    public function storiesImgCreated() {
+        return $this->hasMany(Storiesimg::class, 'user_id', 'id');
+    }
+
+    public function groupsCreated() {
+        return $this->belongsToMany(Groups::class, 'user_groups','user_id', 'id');
+    }
+    
+    public function groups() {
+        return $this->hasMany(Groups::class);
+    }
+
+    public function friendRequests (){
+        return $this->hasMany(Relation::class, 'friend_id')->where('is_friend', Relation::REQUEST_FRIEND);
+    }
+
+    
+    public function friends (){
+        return $this->hasMany(Relation::class, 'friend_id')->where('is_friend', Relation::IS_FRIEND);
+    }
+
+    
+    public function members (){
+        return $this->hasMany(GroupUser::class, 'user_id')->where('stt', GroupUser::IS_MEMBER);
+    }
+
+    
+    public function memberRequests (){
+        return $this->hasMany(GroupUser::class, 'user_id')->where('stt', GroupUser::REQUEST_MEMBER);
+    }
 }
