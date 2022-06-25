@@ -23,4 +23,8 @@ class Relation extends Model
     public function relations(){
         return $this->belongsTo(User::class);
     }
+
+    public function sendRequest(){
+        return $this->belongsTo(User::class);
+    }
 }

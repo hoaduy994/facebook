@@ -12,8 +12,11 @@ class Stories extends Model
 
     protected $table = 'stories_text';
     
-    public function storiesCreated() {
-        return $this->hasMany(Stories::class, 'user_id', 'id');
+    public function userCreated() {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function images(){
+        return $this->hasMany(Storiesimg::class,'id');
+    }
 }

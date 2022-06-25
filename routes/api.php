@@ -3,10 +3,10 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FriendController;
 use App\Http\Controllers\HomeController;
-<<<<<<< HEAD
+
 use App\Http\Controllers\GroupControllers;
-use App\Http\Controllers\ResetPasswordController;
-=======
+
+
 use App\Http\Controllers\StoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResetPasswordController;
@@ -14,7 +14,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ReactionController;
 use App\Http\Controllers\PostDetailController;
 use app\Models\User;
->>>>>>> fdfd20c57abebeb9d2649198baee34df16ef0fa6
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -53,6 +53,7 @@ Route::group([
     Route::post('/posts', [HomeController::class, 'createPost'])->name('createPost');
     Route::post('/uposts', [HomeController::class, 'updatePost']);
     Route::get('/posts', [HomeController::class, 'index'])->name('index');
+    Route::get('/listStories', [HomeController::class, 'listStories'])->name('listStories');
     Route::post('/posts/{id}', [HomeController::class, 'updatePost'])->name('updatePost');
     Route::delete('/posts/{id}', [HomeController::class, 'deletePost'])->name('deletePost');
     // Route::post('/posts', [AuthController::class, 'createPost']);
@@ -64,10 +65,14 @@ Route::group([
 
    
 
-    Route::get('/friendRequests/{id}', [FriendController::class,'friendRequests'])->name('listRequestFriend');
+    Route::get('/friendRequests', [FriendController::class,'friendRequests'])->name('listRequestFriend');
     Route::get('/friendList/{id}', [FriendController::class,'friendList'])->name('listFriend');
     Route::post('/approveRequest/{id}', [FriendController::class,'approveRequest'])->name('replyRequest');
+    Route::post('/sendRequest/{id}', [FriendController::class,'sendRequest'])->name('sendRequest');
+    Route::delete('/delFriend/{id}', [FriendController::class, 'delFriend'])->name('delFriend');
 
+
+    Route::get('/listgroups', [GroupControllers::class, 'listGroup'])->name('listGroup');
     Route::post('/groups', [GroupControllers::class, 'createGroup'])->name('createGroup');
     Route::post('/edit_groups/{id}', [GroupControllers::class, 'editGroup'])->name('editGroup');
     Route::delete('/groups/{id}', [GroupControllers::class, 'deleteGroup'])->name('deleteGroup');
@@ -82,26 +87,26 @@ Route::group([
     Route::post('/join/{id}', [GroupControllers::class, 'join'])->name('sendRequestGroup');
     Route::post('/acpMember/{id}', [GroupControllers::class, 'acpMember'])->name('acpMember');
     Route::post('/refMember/{id}', [GroupControllers::class, 'refMember'])->name('refMember');
-    Route::post('/delMember/{id}', [GroupControllers::class, 'delMember'])->name('delMember');
+    Route::delete('/delMember/{id}/{id2}', [GroupControllers::class, 'delMember'])->name('delMember');
     Route::post('/outGroup/{id}', [GroupControllers::class, 'outgroup'])->name('outgroup');
 
     
 });
-Route::post('/story', [StoryController::class, 'createStory']);
-Route::group([
-    'middleware' => 'auth:api',
-    'prefix' => 'user'
-], function () {
-    Route::get('me', [ProfileController::class, 'me']);
-    // Route::post('status/new', 'StatusUpdatesController@store');
-    // Route::post('image-upload', 'UserImageController@store');
-    // Route::get('addFriend/{id}', 'UserController@toggleFriend');
-    // Route::get('getFriends', 'UserController@getFriends');
-});
-Route::post('/reset-password', [ResetPasswordController::class, 'sendMail']);
-Route::put('/reset-password/{token}', [ResetPasswordController::class,'reset']);
+// // Route::post('/story', [StoryController::class, 'createStory']);
+// Route::group([
+//     'middleware' => 'auth:api',
+//     'prefix' => 'user'
+// ], function () {
+//     Route::get('me', [ProfileController::class, 'me']);
+//     // Route::post('status/new', 'StatusUpdatesController@store');
+//     // Route::post('image-upload', 'UserImageController@store');
+//     // Route::get('addFriend/{id}', 'UserController@toggleFriend');
+//     // Route::get('getFriends', 'UserController@getFriends');
+// });
+// Route::post('/reset-password', [ResetPasswordController::class, 'sendMail']);
+// Route::put('/reset-password/{token}', [ResetPasswordController::class,'reset']);
 
-Route::post('/comment', [CommentController::class, 'createComment']);
+Route::post('/comment/{id}', [CommentController::class, 'createComment']);
 Route::post('/update_comment/{id}', [CommentController::class, 'updateComment']);
 Route::delete('/delete_comment/{id}', [CommentController::class, 'deleteComment']);
 

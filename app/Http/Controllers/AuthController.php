@@ -144,15 +144,12 @@ class AuthController extends Controller
 
     public function editProfile(Request $request, $id){
         $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|string|email|max:100',
-            'profile_photo_path' => 'required|image',
-            'background_img' => 'required|image',
-            'bio' => 'required|string|max:255',
-            'address' => 'required|string',
-        ],[
-            'name.required'=>'Tên không được bỏ trống.',
-            'email.required'=>'Email không được bỏ trống.',
+            'name' => 'string',
+            'email' => 'string|email|max:100',
+            'profile_photo_path' => 'image',
+            'background_img' => 'image',
+            'bio' => 'string|max:255',
+            'address' => 'string',
         ]);
 
         $users = User::find($id);
@@ -211,7 +208,7 @@ class AuthController extends Controller
             ],404);
         } 
         // dd($user);
-        $posts = DB::table('posts')->where('user_id',$id)->get();
+        $posts = Post::with('postsCreated','user','comments','createPostdetail','reaction')->whereIn('user_id', $user)->get()->sortByDesc('created_at');
         // dd($posts);
         return response()->json([
             'message' => 'Get profile successfully',

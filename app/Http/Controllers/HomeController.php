@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
+use App\Models\CommentUser;
 use App\Models\Post;
-<<<<<<< HEAD
+use App\Models\PostDetail;
+use App\Models\Reaction;
+use App\Models\Relation;
 use App\Models\Stories;
 use App\Models\Storiesimg;
-=======
-use App\Models\PostDetail;
->>>>>>> fdfd20c57abebeb9d2649198baee34df16ef0fa6
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
@@ -17,10 +18,41 @@ class HomeController extends Controller
 {
     
     public function index() {
-        $posts = Post::all()->sortByDesc('created_at');
+
+        $checkAuthor = auth()->user();
+        // $user = Post::()->toArray();
+        
+        $myposts = Post::with('user','comments','reaction','comments.user')
+        ->whereIn('user_id', $checkAuthor)
+        ->get()->sortByDesc('created_at');
+
+        $friend = User::whereHas('friends', function($q) {
+            $q->where('user_id', auth()->user()->id);
+        })->get('id')->toArray();
+        // dd($friend);
+
+        $posts = Post::with('user','comments','reaction','comments.user')
+        ->whereIn('user_id', $friend)
+        ->get()->sortByDesc('created_at');
+
         return response()->json([
             'message' => 'Get posts successfully',
-            'posts' => $posts
+            'mypost' => $myposts,
+            'posts' => $posts,
+        ]);
+    }
+
+    public function listStories()
+    {
+        $friends = User::whereHas('friends', function($q) {
+        $q->where('user_id', auth()->user()->id);
+        })->get('id');
+
+        $stories = Stories::with('userCreated','images')->whereIn('user_id', $friends)->get();
+        
+        return response()->json([
+            'stories' => $stories,
+            // 'stories_img' => $stories_img,
         ]);
     }
 
@@ -40,17 +72,15 @@ class HomeController extends Controller
         $request->validate([
             'content' => 'required|string',
             'access_modifier' => 'in:1,2,3',
-            'image' => 'required|image',
+            'image' => 'image',
         ]);
-
+        // dd($request->image);
         $data = [
             'content' => $request->content,
             'access_modifier' => $request->access_modifier,
-<<<<<<< HEAD
             'image' => $this->saveImagePost($request->image),
-=======
->>>>>>> fdfd20c57abebeb9d2649198baee34df16ef0fa6
         ];
+        // dd($data);
         // if ($request->access_modified){
         //     $data['access_modified'] = $request->access_modified;
         // }
@@ -69,17 +99,13 @@ class HomeController extends Controller
             'total' => '0',
         ];
         $post_detail = $post->createPostdetail()->create($data1);
-        dd($post_detail);
+        // dd($post_detail);
         return response()->json([
-<<<<<<< HEAD
+
             'message' => 'Bạn đã tạo bài viết thành công.',
-            'post' => $post
-=======
-            'message' => 'Created posts successfully',
             'post' => $post,
             'id' => $post_detail
 
->>>>>>> fdfd20c57abebeb9d2649198baee34df16ef0fa6
         ]);
         // $post = Post::create
     }
@@ -88,7 +114,7 @@ class HomeController extends Controller
         $request->validate([
             'content' => 'required|string',
             'access_modifier' => 'in:1,2,3',
-            'image' => 'required|image',
+            'image' => 'image',
         ]);
 
 

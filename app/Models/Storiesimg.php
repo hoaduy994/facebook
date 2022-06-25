@@ -13,7 +13,7 @@ class Storiesimg extends Model
     protected $table = 'stories_img';
     
     public function storiesImgCreated() {
-        return $this->hasMany(Storiesimg::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
 }

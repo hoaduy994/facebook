@@ -12,13 +12,13 @@ class Reaction extends Model
     protected $guarded = [];
 
     protected $table = 'user_posts';
-    public function user()
+    public function userCreate()
     {
         return $this->belongsTo(User::class);
     }
    
     public function reaction() {
-        return $this->belongsTo(Reaction::class);
+        return $this->belongsTo(User::class);
     }
 
     public function user_posts()

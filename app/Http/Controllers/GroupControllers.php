@@ -13,6 +13,14 @@ use PHPUnit\TextUI\XmlConfiguration\Group;
 
 class GroupControllers extends Controller
 {
+    public function listGroup(){
+        $group = Groups::all();
+        return response()->json([
+            'message' => 'listGroup',
+            'group' => $group
+        ]);
+    }
+
     public function index($group_id) {
         $groups = Groups::find($group_id); 
             if (!$groups) {
@@ -21,24 +29,34 @@ class GroupControllers extends Controller
                 ], 404);
             }
 
-        $members = User::whereHas('members', function($q) use($group_id) {
-            $q->where('group_id', $group_id);
-            $q->where('stt','1');
-        })->first();
+        $user = Auth::user()->id;
+        $member = DB::table('user_groups')->where('user_id', $user)
+        ->where('group_id', $group_id)
+        ->where('stt','1')
+        ->first();
+        // dd($member);
+        $members = User::whereHas('members')->get('id');
+        // dd(!$members);
 
         $group = DB::table('groups')
         ->where('id',$group_id)
         ->first('modifier');
         // dd($group);
         if($group->modifier == '1') {
-            $posts = Post::all()->where('group_id',$group_id)->sortByDesc('created_at');
+            $posts = Post::with('user','comments','reaction','comments.user')
+            ->whereIn('user_id', $members)
+            ->where('group_id',$group_id)
+            ->get()->toArray();
             return response()->json([
                 'message' => 'Get posts successfully',
                 'posts' => $posts
             ]);
-        } else if($group->modifier == '2') {
-            if ($members){
-                $posts = Post::all()->where('group_id',$group_id)->sortByDesc('created_at');
+        } else {
+            if ($member){
+                $posts = Post::with('user','comments','reaction','comments.user')
+                ->whereIn('user_id', $members)
+                ->where('group_id',$group_id)
+                ->get()->toArray();
                 return response()->json([
                     'message' => 'Get posts successfully',
                     'posts' => $posts
@@ -421,32 +439,7 @@ class GroupControllers extends Controller
             DB::rollBack();
             throw new \Exception($e->getMessage());
         }
-            // send user_id: id accept, friend_id : id list 
-            // $groups = Groups::find($group_id);
-            // $memberRequests = GroupUser::where('group_id', $group_id)
-            // // ->where('group_id',$request->group_id)
-            // ->where('user_id', $request->user_id)->first();
-    
-            // if (!$memberRequests) {
-            //     return response()->json([
-            //         'message' => 'Member_request not found'
-            //     ], 500);
-            // }
-            // $updateRequest = [];
-            // if ($request->type == GroupUser::ACCPET_MEMBER) {
-            //     $updateRequest['stt'] = GroupUser::IS_MEMBER;
-            //     // $relation->is_friend = Relation::IS_FRIEND
-            // }
-            // else {
-            //     $updateRequest['stt'] = GroupUser::NO_MEMBER;
-            //     // $relation->is_friend = Relation::IS_FRIEND
-            // }
-    
-            // $memberRequests->update($updateRequest);
-    
-            // return response()->json([
-            //     'userRequest' => $memberRequests,
-            // ]);
+          
     }
 
     public function refMember(Request $request, $group_id)
@@ -475,38 +468,38 @@ class GroupControllers extends Controller
        ]);
     }
 
-    public function delMember(Request $request, $group_id)
-    {
-        $checkAuthor = auth()->user()->groups()->where('id', $group_id)->first();
+    public function delMember(Request $request, $group_id,$user_id)
+    {   
+
+        $checkAuthor = Groups::where('user_id', Auth::user()->id)
+        ->where('id',$group_id)
+        ->first();
         // dd($checkAuthor);
+        // dd($user_id);
         if (!$checkAuthor) {
             return response()->json([
                 'message' => 'Not permission',
             ], 403);
         }
-        
+        $user =  GroupUser::where('user_id',  $user_id)
+        ->where('group_id', '=', $group_id)
+        ->where('stt', '1')
+        ->first();
         DB::beginTransaction();
         
         try {
-            $user_groups = GroupUser::where('group_id', '=', $group_id)
-            ->where('user_id', '=',  $request->user_id)
-            ->where('stt','=', '1')
-            ->delete();
+           
+            $user->delete();
             // dd($user_groups);
             DB::commit();
             return response()->json([
-                'message' => 'success',
-                'user_groups' => $user_groups,
+                'message' => 'Delete member',
+                // 'user_groups' => $user_groups,
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
             throw new \Exception($e->getMessage());
         }
-        
-        return response()->json([
-            'message' =>'success',
-           'user_groups' => $user_groups,
-       ]);
     }
 
     public function memberRequests($group_id)

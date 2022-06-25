@@ -23,6 +23,10 @@ class PostDetail extends Model
         return $this->hasMany(Post::class);
     }
 
+    public function usercreate(){
+        return $this->belongsTo(User::class);
+    }
+
     public function createPostdetail (){
         return $this->belongsTo(Post::class,'post_id');
     }

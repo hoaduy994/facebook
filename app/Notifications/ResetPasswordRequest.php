@@ -10,11 +10,9 @@ use Illuminate\Notifications\Notification;
 class ResetPasswordRequest extends Notification
 {
     use Queueable;
-<<<<<<< HEAD
-    protected $token;
-=======
 
->>>>>>> fdfd20c57abebeb9d2649198baee34df16ef0fa6
+    protected $token;
+
     /**
      * Create a new notification instance.
      *
@@ -22,11 +20,10 @@ class ResetPasswordRequest extends Notification
      */
     public function __construct($token)
     {
-<<<<<<< HEAD
         $this->token =  $token;
-=======
+
         $this->token = $token;
->>>>>>> fdfd20c57abebeb9d2649198baee34df16ef0fa6
+
     }
 
     /**
@@ -48,7 +45,6 @@ class ResetPasswordRequest extends Notification
      */
     public function toMail($notifiable)
     {
-<<<<<<< HEAD
         // $url = url('reset-password/?token=' . $this->token);
         return (new MailMessage)
                     ->subject('Reset Password Token Fakebook')
@@ -71,26 +67,4 @@ class ResetPasswordRequest extends Notification
     //         //
     //     ];
     // }
-=======
-        $url = url('reset-password/?token=' . $this->token);
-        
-        return (new MailMessage)
-            ->line('You are receiving this email because we received a password reset request for your account.')
-            ->action('Reset Password', url($url))
-            ->line('If you did not request a password reset, no further action is required.');
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
-    }
->>>>>>> fdfd20c57abebeb9d2649198baee34df16ef0fa6
 }

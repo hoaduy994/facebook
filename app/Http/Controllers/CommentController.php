@@ -8,25 +8,32 @@ use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\Comment;
+use App\Models\CommentUser;
 
 class CommentController extends Controller
 {
-    public function createComment(Request $request)
+    public function createComment(Request $request, $post_id)
     {
         $request->validate([
             'content'=>'required',
+            'img' => 'image'
+        ],[
+            'content.required'=>'Nội dung không được bỏ trống.',
         ]);
-        $user_id = auth()->user()->id;
-
+        $user_id = Auth::user()->id;
+        // dd($user_id);
         $data = [
             'content' => $request->content,
             'user_id' =>  $user_id,
-            'post_id' => $request->post_id
+            'post_id' => $post_id,
         ];
-        $comment = Comment::create(array_merge($data));
+
+        // dd($data);
+        $comment = Comment::create($data);
+
         return response()->json([
             'message' => 'User successfully commentted',
-            'comment' => $comment
+            'comment' => $comment,
             
         ]);
    
