@@ -101,10 +101,10 @@ class User extends Authenticatable implements JWTSubject
     public function comments() {
         return $this->hasMany(User::class,'user_id','id');
     }
-
-    public function usercreate()
-    {
-        return $this->hasMany(PostDetail::class);
+    public function commentsCreated() {
+        return $this->hasMany(Comment::class, 'user_id', 'id');
     }
+
     
+
 }

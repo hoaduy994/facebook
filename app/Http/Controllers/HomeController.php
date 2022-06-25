@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use App\Models\CommentUser;
 use App\Models\Post;
+
 use App\Models\PostDetail;
 use App\Models\Reaction;
 use App\Models\Relation;
 use App\Models\Stories;
 use App\Models\Storiesimg;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
@@ -99,13 +101,12 @@ class HomeController extends Controller
             'total' => '0',
         ];
         $post_detail = $post->createPostdetail()->create($data1);
-        // dd($post_detail);
+        
         return response()->json([
 
             'message' => 'Bạn đã tạo bài viết thành công.',
             'post' => $post,
             'id' => $post_detail
-
         ]);
         // $post = Post::create
     }
